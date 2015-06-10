@@ -9,7 +9,7 @@ xtestActivity <- read.table("data/test/y_test.txt")
 ## Add subjects and activity to test dataset
 xtest <- cbind(xtest, xtestSubjects, xtestActivity)
 
-## Read in test data, subject list and activity list
+## Read in training data, subject list and activity list
 xtrain <- read.table("data/train/X_train.txt", header = FALSE, sep = "")
 xtrainSubjects <- read.table("data/train/subject_train.txt")
 xtrainActivity <- read.table("data/train/y_train.txt")
@@ -43,14 +43,14 @@ featureList[563] <- "activity"
 colnames(fullData) <- featureList
 
 ## Identify mean and standard deviation variables (except those
-## without a standard deviation), and creat new dataframe with 
+## without a standard deviation), and create new dataframe with 
 ## those variables
 varMeanStd <- intersect(grep("mean|std",featureList),
                         grep("Freq",featureList,invert=TRUE))
 tidyData <- fullData[, c(varMeanStd, 562, 563)]
 rm(varMeanStd, featureList, fullData)
 
-## Melt into tidy dataset and rename varibale to increase 
+## Melt into tidy dataset and rename varibale 
 tidyData <- melt(tidyData, id.vars = c("subjects", "activity"))
 tidyData <- rename(tidyData, measurement = variable)
 
