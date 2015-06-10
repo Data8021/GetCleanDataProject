@@ -31,7 +31,8 @@ colnames(fullData) <- c(seq(1:562), "activitynum")
 activityList <- read.table("data/activity_labels.txt", sep=" ")
 colnames(activityList) <- c("activitynum", "activity")
 fullData <- left_join(fullData, activityList, by="activitynum")
-fullData <- select(fullData, -activitynum)
+fullData <- tbl_df(fullData) %>%
+    select(-activitynum)
 rm(activityList)
 
 ## Read in variable names and apply to columns
@@ -49,14 +50,15 @@ varMeanStd <- intersect(grep("mean|std",featureList),
 tidyData <- fullData[, c(varMeanStd, 562, 563)]
 rm(varMeanStd, featureList, fullData)
 
-## Melt into tidy dataset and Split out variable column into feature,
-## function and axis.
+## Melt into tidy dataset and rename varibale to increase 
 tidyData <- melt(tidyData, id.vars = c("subjects", "activity"))
-tidyData <- cbind(tidyData, colsplit(tidyData$variable,
-                   "-",
-                   names = c("feature", "function", "axis")))
-tidyData <- select(tidyData, -variable) %>%
-                   select(1, 2, 4, 5, 6, 3)
+tidyData <- rename(tidyData, measurement = variable)
 
-## Save RDA
-save(fullData, file="fullData.rda")
+## Group by subjects, activity, and measurement, and
+## then find the average of every combination
+tidyData <- tbl_df(tidyData) %>%
+    group_by(subjects, activity, measurement) %>%
+    summarise(average=mean(value))
+
+## Write TXT file
+write.table(tidyData, file="tidyData.txt")
