@@ -61,4 +61,4 @@ tidyData <- tbl_df(tidyData) %>%
     summarise(average=mean(value))
 
 ## Write TXT file
-write.table(tidyData, file="tidyData.txt")
+write.table(tidyData, file="tidyData.txt", row.name=FALSE)
