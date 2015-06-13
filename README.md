@@ -13,4 +13,4 @@ The code in run_analysis performs the following:
 5.  Identifies the mean and standard deviation variables, and creates new dataframe with those variables.  
 6.  Melts into tidy dataset.  
 7.  Groups data frame by subjects, activity, and measurement, and then finds the average of every combination.  
-8.  Write the output of the tidy dataset into "tidyData.txt".  This file can be read into R with ```{r}read.table("tidyData.txt", header=TRUE)```
+8.  Write the output of the tidy dataset into "tidyData.txt".  This file can be read into R with ```read.table("tidyData.txt", header=TRUE)```
